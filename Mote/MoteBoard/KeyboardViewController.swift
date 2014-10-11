@@ -18,6 +18,21 @@ class KeyboardViewController: UIInputViewController {
         // Add custom view sizing constraints here
     }
 
+    func createButtonWithTitle(title: String) -> UIButton {
+        let button = UIButton.buttonWithType(.System) as UIButton
+        button.frame = CGRectMake(0, 0, 20, 20)
+        button.setTitle(title, forState: .Normal)
+        button.sizeToFit()
+        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
+
+        // TODO: Set title color, font, and size
+        // TODO: Add a target to buttton for when it's tapped
+        
+        return button
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -31,6 +46,8 @@ class KeyboardViewController: UIInputViewController {
         self.nextKeyboardButton.addTarget(self, action: "advanceToNextInputMode", forControlEvents: .TouchUpInside)
         
         self.view.addSubview(self.nextKeyboardButton)
+        
+        self.view.addSubview(createButtonWithTitle("A"))
     
         var nextKeyboardButtonLeftSideConstraint = NSLayoutConstraint(item: self.nextKeyboardButton, attribute: .Left, relatedBy: .Equal, toItem: self.view, attribute: .Left, multiplier: 1.0, constant: 0.0)
         var nextKeyboardButtonBottomConstraint = NSLayoutConstraint(item: self.nextKeyboardButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
