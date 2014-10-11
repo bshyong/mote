@@ -27,11 +27,45 @@ class KeyboardViewController: UIInputViewController {
         button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
 
         // TODO: Set title color, font, and size
-        // TODO: Add a target to buttton for when it's tapped
+        button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
         
         return button
     }
-    
+  
+    func didTapButton(sender: AnyObject?) {
+      let button = sender as UIButton
+      let title = button.titleForState(.Normal)
+      var proxy = textDocumentProxy as UITextDocumentProxy
+      
+      proxy.insertText(title!)
+    }
+  
+    func addIndividualButtonConstraints(buttons: [UIButton], mainView: UIView) {
+      for (index, button) in enumerate(buttons) {
+        // Set buttons 1px from the top, relative to their parent view
+        var topConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: mainView, attribute: .Top, multiplier: 1.0, constant: 1)
+        var bottomConstraint = NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal, toItem: mainView, attribute: .Bottom, multiplier: 1.0, constant: -1)
+        var rightConstraint : NSLayoutConstraint!
+        
+        if index == buttons.count - 1 {
+          rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: mainView, attribute: .Right, multiplier: 1.0, constant: -1)
+        } else {
+          let nextButton = buttons[index+1]
+          rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: nextButton, attribute: .Left, multiplier: 1.0, constant: -1)
+        }
+        
+
+      }
+    }
+  
+    func createRowOfButtons(buttonTitles: [NSString]) -> UIView {
+      var buttons = [UIButton]()
+      var keyboardRowView = UIView(frame: CGRectMake(0, 0, 320, 50))
+      // Loop though to create buttons and add subviews to KeyboardRow
+      
+      return keyboardRowView
+    }
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()

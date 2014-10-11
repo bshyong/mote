@@ -537,6 +537,7 @@
 				01E8170D19E8ADC9009CDB7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01E8170E19E8ADC9009CDB7D /* Build configuration list for PBXNativeTarget "MoteTests" */ = {
 			isa = XCConfigurationList;
@@ -545,6 +546,7 @@
 				01E8171019E8ADC9009CDB7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01E8172019E8AE12009CDB7D /* Build configuration list for PBXNativeTarget "MoteBoard" */ = {
 			isa = XCConfigurationList;
@@ -553,6 +555,7 @@
 				01E8172219E8AE12009CDB7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
