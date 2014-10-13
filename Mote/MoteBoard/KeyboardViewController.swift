@@ -54,6 +54,14 @@ class KeyboardViewController: UIInputViewController {
           rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: nextButton, attribute: .Left, multiplier: 1.0, constant: -1)
         }
         
+        var leftConstraint : NSLayoutConstraint!
+        
+        if index == 0 {
+          leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: mainView, attribute: .Left, multiplier: 1.0, constant: 1)
+        } else {
+          let prevButton = buttons[index-1]
+          
+        }
 
       }
     }
