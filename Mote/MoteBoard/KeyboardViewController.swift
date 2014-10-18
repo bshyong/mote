@@ -60,9 +60,15 @@ class KeyboardViewController: UIInputViewController {
           leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: mainView, attribute: .Left, multiplier: 1.0, constant: 1)
         } else {
           let prevButton = buttons[index-1]
-          
-        }
+          leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: prevButton, attribute: .Right, multiplier: 1.0, constant: 1)
 
+            
+          let firstButton = buttons[0]
+          var widthConstraint = NSLayoutConstraint(item: firstButton, attribute: .Width, relatedBy: .Equal, toItem: button, attribute: .Width, multiplier: 1.0, constant: 0)
+
+          mainView.addConstraint(widthConstraint)
+        }
+          mainView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
       }
     }
   
@@ -71,6 +77,14 @@ class KeyboardViewController: UIInputViewController {
       var keyboardRowView = UIView(frame: CGRectMake(0, 0, 320, 50))
       // Loop though to create buttons and add subviews to KeyboardRow
       
+      for buttonTitle in buttonTitles{
+        let button = createButtonWithTitle(buttonTitle)
+        buttons.append(button)
+        keyboardRowView.addSubview(button)
+      }
+
+      addIndividualButtonConstraints(buttons, mainView: keyboardRowView)
+
       return keyboardRowView
     }
   
@@ -79,6 +93,9 @@ class KeyboardViewController: UIInputViewController {
         super.viewDidLoad()
     
         // Perform custom UI setup here
+
+        // next keyboard button code..safe to remove
+
         self.nextKeyboardButton = UIButton.buttonWithType(.System) as UIButton
     
         self.nextKeyboardButton.setTitle(NSLocalizedString("Next Keyboard", comment: "Title for 'Next Keyboard' button"), forState: .Normal)
@@ -88,12 +105,27 @@ class KeyboardViewController: UIInputViewController {
         self.nextKeyboardButton.addTarget(self, action: "advanceToNextInputMode", forControlEvents: .TouchUpInside)
         
         self.view.addSubview(self.nextKeyboardButton)
-        
-        self.view.addSubview(createButtonWithTitle("A"))
     
         var nextKeyboardButtonLeftSideConstraint = NSLayoutConstraint(item: self.nextKeyboardButton, attribute: .Left, relatedBy: .Equal, toItem: self.view, attribute: .Left, multiplier: 1.0, constant: 0.0)
         var nextKeyboardButtonBottomConstraint = NSLayoutConstraint(item: self.nextKeyboardButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
         self.view.addConstraints([nextKeyboardButtonLeftSideConstraint, nextKeyboardButtonBottomConstraint])
+
+//        let buttonTitles1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]
+//        let buttonTitles2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"]
+//        let buttonTitles3 = ["△", "Z", "X", "C", "V", "B", "N", "M", "◁"]
+//        let buttonTitles4 = ["nums", "CK", "voice", "space", "send"]
+//        // CK = change keyboard, voice = siri voice input
+//        
+//        var row1 = createRowOfButtons(buttonTitles1)
+//        var row2 = createRowOfButtons(buttonTitles2)
+//        var row3 = createRowOfButtons(buttonTitles3)
+//        var row4 = createRowOfButtons(buttonTitles4)
+// 
+//        self.view.addSubview(row1)
+//        self.view.addSubview(row2)
+//        self.view.addSubview(row3)
+//        self.view.addSubview(row4)
+ 
     }
 
     override func didReceiveMemoryWarning() {
