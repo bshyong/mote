@@ -65,76 +65,109 @@ class KeyboardViewController: UIInputViewController {
     return keyboardRowView
   }
   
-    func createButtonWithTitle(title: String) -> UIButton {
-        let button = UIButton.buttonWithType(.System) as UIButton
-        button.frame = CGRectMake(0, 0, 20, 20)
-        button.setTitle(title, forState: .Normal)
-        button.sizeToFit()
-        button.setTranslatesAutoresizingMaskIntoConstraints(false)
-        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
+  func createButtonWithTitle(title: String) -> UIButton {
+      let button = UIButton.buttonWithType(.System) as UIButton
+      button.frame = CGRectMake(0, 0, 20, 20)
+      button.setTitle(title, forState: .Normal)
+      button.sizeToFit()
+      button.setTranslatesAutoresizingMaskIntoConstraints(false)
+      button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
 
-        button.titleLabel?.font = UIFont.systemFontOfSize(15)
-        button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+      button.titleLabel?.font = UIFont.systemFontOfSize(15)
+      button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
 
-        button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
-        
-        return button
-    }
-  
-    func didTapButton(sender: AnyObject?) {
-      let button = sender as UIButton
+      button.addTarget(self, action: "didTapButton:", forControlEvents: .TouchUpInside)
       
-      var proxy = textDocumentProxy as UITextDocumentProxy
-      
-      if let title = button.titleForState(.Normal) {
-        switch title {
-        case "◁":
-          proxy.deleteBackward()
-        case "RETURN":
-          proxy.insertText("\n")
-        case "SPACE":
-          proxy.insertText(" ")
-        case "CK":
-          self.advanceToNextInputMode()
-        default:
-          proxy.insertText(title)
-        }
+      return button
+  }
+
+  func didTapButton(sender: AnyObject?) {
+    let button = sender as UIButton
+    
+    var proxy = textDocumentProxy as UITextDocumentProxy
+    
+    if let title = button.titleForState(.Normal) {
+      switch title {
+      case "◁":
+        proxy.deleteBackward()
+      case "RETURN":
+        proxy.insertText("\n")
+      case "SPACE":
+        proxy.insertText(" ")
+      case "CK":
+        self.advanceToNextInputMode()
+      default:
+        proxy.insertText(title)
       }
     }
+  }
   
-    func addIndividualButtonConstraints(buttons: [UIButton], mainView: UIView) {
-      for (index, button) in enumerate(buttons) {
-        // Set buttons 1px from the top, relative to their parent view
-        var topConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: mainView, attribute: .Top, multiplier: 1.0, constant: 1)
-        var bottomConstraint = NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal, toItem: mainView, attribute: .Bottom, multiplier: 1.0, constant: -1)
-        var rightConstraint : NSLayoutConstraint!
-        
-        if index == buttons.count - 1 {
-          rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: mainView, attribute: .Right, multiplier: 1.0, constant: -1)
-        } else {
-          let nextButton = buttons[index+1]
-          rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: nextButton, attribute: .Left, multiplier: 1.0, constant: -1)
-        }
-        
-        var leftConstraint : NSLayoutConstraint!
-        
-        if index == 0 {
-          leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: mainView, attribute: .Left, multiplier: 1.0, constant: 1)
-        } else {
-          let prevButton = buttons[index-1]
-          leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: prevButton, attribute: .Right, multiplier: 1.0, constant: 1)
+  // TODO: Numbers button pressed
+  // when bottom numbers button is pressed,
+  // 1. Swap letter buttons for number & symbols
+  // 2. Swap shift button for number/more symbols button
+  // 3. Swap bottom numbers button to ABC (letters button)
+  
+  // TODO: Shift button pressed
+  func shiftButtonPressed() {
+    // When shift button is pressed,
+    // 0. Store shift button up/down state in a controller property?
+    // 1. change visual state on shift button
+    // 2. when key is pressed, insert UPCASE version instead
+    // 3. reset visual state on shift button
+  }
+  
+  override func textWillChange(textInput: UITextInput) {
+    // The app is about to change the document's contents. Perform any preparation here.
+  }
+  
+  override func textDidChange(textInput: UITextInput) {
+    // The app has just changed the document's contents, the document context has been updated.
+    
+    var textColor: UIColor
+    var proxy = self.textDocumentProxy as UITextDocumentProxy
+    if proxy.keyboardAppearance == UIKeyboardAppearance.Dark {
+      textColor = UIColor.whiteColor()
+    } else {
+      textColor = UIColor.blackColor()
+    }
+  }
 
-            
-          let firstButton = buttons[0]
-          var widthConstraint = NSLayoutConstraint(item: firstButton, attribute: .Width, relatedBy: .Equal, toItem: button, attribute: .Width, multiplier: 1.0, constant: 0)
+  // VIEW CONSTRAINTS
+
+  func addIndividualButtonConstraints(buttons: [UIButton], mainView: UIView) {
+    for (index, button) in enumerate(buttons) {
+      // Set buttons 1px from the top, relative to their parent view
+      var topConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: mainView, attribute: .Top, multiplier: 1.0, constant: 1)
+      var bottomConstraint = NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal, toItem: mainView, attribute: .Bottom, multiplier: 1.0, constant: -1)
+      var rightConstraint : NSLayoutConstraint!
+      
+      if index == buttons.count - 1 {
+        rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: mainView, attribute: .Right, multiplier: 1.0, constant: -1)
+      } else {
+        let nextButton = buttons[index+1]
+        rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: nextButton, attribute: .Left, multiplier: 1.0, constant: -1)
+      }
+      
+      var leftConstraint : NSLayoutConstraint!
+      
+      if index == 0 {
+        leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: mainView, attribute: .Left, multiplier: 1.0, constant: 1)
+      } else {
+        let prevButton = buttons[index-1]
+        leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: prevButton, attribute: .Right, multiplier: 1.0, constant: 1)
+
           
-          widthConstraint.priority = 800
-          mainView.addConstraint(widthConstraint)
-        }
-          mainView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
+        let firstButton = buttons[0]
+        var widthConstraint = NSLayoutConstraint(item: firstButton, attribute: .Width, relatedBy: .Equal, toItem: button, attribute: .Width, multiplier: 1.0, constant: 0)
+        
+        widthConstraint.priority = 800
+        mainView.addConstraint(widthConstraint)
       }
+        mainView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
     }
-  
+  }
+
   func addConstraintsToInputView(inputView: UIView, rowViews: [UIView]){
     for (index, rowView) in enumerate(rowViews) {
       var rightSideConstraint = NSLayoutConstraint(item: rowView, attribute: .Right, relatedBy: .Equal, toItem: inputView, attribute: .Right, multiplier: 1.0, constant: -1)
@@ -170,25 +203,8 @@ class KeyboardViewController: UIInputViewController {
     }
   }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated
-    }
-
-    override func textWillChange(textInput: UITextInput) {
-        // The app is about to change the document's contents. Perform any preparation here.
-    }
-
-    override func textDidChange(textInput: UITextInput) {
-        // The app has just changed the document's contents, the document context has been updated.
-    
-        var textColor: UIColor
-        var proxy = self.textDocumentProxy as UITextDocumentProxy
-        if proxy.keyboardAppearance == UIKeyboardAppearance.Dark {
-            textColor = UIColor.whiteColor()
-        } else {
-            textColor = UIColor.blackColor()
-        }
-    }
-
+  override func didReceiveMemoryWarning() {
+      super.didReceiveMemoryWarning()
+      // Dispose of any resources that can be recreated
+  }
 }
