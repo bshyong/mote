@@ -10,15 +10,21 @@ import UIKit
 
 class KeyboardViewController: UIInputViewController {
 
-    @IBOutlet var nextKeyboardButton: UIButton!
+  @IBOutlet var nextKeyboardButton: UIButton!
 
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-    
-        // Add custom view sizing constraints here
-    }
+  // TODO: add different keyboard views
+  // in controller variables, and
+  // remove them with [self.namedView removeFromSuperview];
+  var mainKeyboard: UIView!
+  var numKeyboard: UIView!
+  var symKeyboard: UIView!
+
+  override func updateViewConstraints() {
+      super.updateViewConstraints()
   
-  
+      // Add custom view sizing constraints here
+  }
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -102,11 +108,20 @@ class KeyboardViewController: UIInputViewController {
     }
   }
   
+  // TODO: Function to switch to symKeyboard
+  // 1. Remove top two rows on keyboard
+  // 2. Replace top two rows with num buttons
+  // 3. shift/num button changes state
+  
+  // TODO: Function to switch to numKeyboard
+  // 1. Remove top three rows on keyboard
+  // 2. Replace top three rows with num buttons
+  // 3. shift button changes to switch to syms button
+  
   // TODO: Numbers button pressed
   // when bottom numbers button is pressed,
-  // 1. Swap letter buttons for number & symbols
-  // 2. Swap shift button for number/more symbols button
-  // 3. Swap bottom numbers button to ABC (letters button)
+  // 1. Call function to switch to numKeyboard
+  // 2. Swap bottom numbers button to ABC (letters button)
   
   // TODO: Shift button pressed
   func shiftButtonPressed() {
