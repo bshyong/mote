@@ -132,6 +132,12 @@ class KeyboardViewController: UIInputViewController {
     // 3. reset visual state on shift button
   }
   
+  
+  // TODO: Have a place for autocomplete bar
+  // TODO: Everytime text changes, call Yelp API to
+  // to see if it matches a venue nearby
+  // Display the result in the autocomplete bar
+  
   override func textWillChange(textInput: UITextInput) {
     // The app is about to change the document's contents. Perform any preparation here.
   }
