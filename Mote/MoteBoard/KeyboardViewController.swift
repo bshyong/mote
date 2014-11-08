@@ -18,6 +18,8 @@ class KeyboardViewController: UIInputViewController {
   var mainKeyboard: UIView!
   var numKeyboard: UIView!
   var symKeyboard: UIView!
+  var viewHeight: CGFloat!
+  var viewWidth: CGFloat!
 
   override func updateViewConstraints() {
       super.updateViewConstraints()
@@ -28,31 +30,80 @@ class KeyboardViewController: UIInputViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Perform custom UI setup here
-    
+  }
+  
+  // Need to use viewDidAppear;
+  // otherwise input.bounds gives incorrect values
+
+  override func viewDidAppear(animated: Bool) {
+    super.viewDidAppear(animated)
+    setBounds()
+    addMainKeyboard()
+  }
+  
+  func setBounds() {
+    viewHeight = self.inputView.bounds.height
+    viewWidth = self.inputView.bounds.width
+  }
+  
+//  func keyboardBuilder(rows: [Array]) {
+//    var keyboardView = UIView(frame: CGRectMake(0, 0, viewWidth, viewHeight))
+//    
+//    let buttonTitles1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]
+//    let buttonTitles2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"]
+//    let buttonTitles3 = ["△", "Z", "X", "C", "V", "B", "N", "M", "◁"]
+//    let buttonTitles4 = ["nums", "CK", "SPACE", "RETURN"]
+//    // CK = change keyboard
+//    
+//    var rowViews = Array<UIView>
+//    
+//    for row in rows {
+//      keyboardView.addSubview(createRowOfButtons(row))
+//      row.setTranslatesAutoresizingMaskIntoConstraints(false)
+//      rowViews.append(row)
+//    }
+//    
+//    addConstraintsToInputView(keyboardView, rowViews: rowViews)
+//    
+//    return keyboardView
+//  }
+//  
+//  func buildNumkeyboard() -> UIView {
+//    var mainKeyboard = UIView(frame: CGRectMake(0, 0, self.inputView.bounds.width, self.inputView.bounds.height))
+//  }
+
+  func buildMainKeyboard() -> UIView{
+    var mainKeyboard = UIView(frame: CGRectMake(0, 0, viewWidth, viewHeight))
+
     let buttonTitles1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"]
     let buttonTitles2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"]
     let buttonTitles3 = ["△", "Z", "X", "C", "V", "B", "N", "M", "◁"]
-    let buttonTitles4 = ["nums", "CK", "voice", "SPACE", "RETURN"]
-    // CK = change keyboard, voice = siri voice input
+    let buttonTitles4 = ["nums", "CK", "SPACE", "RETURN"]
+    // CK = change keyboard
 
     var row1 = createRowOfButtons(buttonTitles1)
     var row2 = createRowOfButtons(buttonTitles2)
     var row3 = createRowOfButtons(buttonTitles3)
     var row4 = createRowOfButtons(buttonTitles4)
-
-    self.view.addSubview(row1)
-    self.view.addSubview(row2)
-    self.view.addSubview(row3)
-    self.view.addSubview(row4)
-
+    
+    mainKeyboard.addSubview(row1)
+    mainKeyboard.addSubview(row2)
+    mainKeyboard.addSubview(row3)
+    mainKeyboard.addSubview(row4)
+    
     row1.setTranslatesAutoresizingMaskIntoConstraints(false)
     row2.setTranslatesAutoresizingMaskIntoConstraints(false)
     row3.setTranslatesAutoresizingMaskIntoConstraints(false)
     row4.setTranslatesAutoresizingMaskIntoConstraints(false)
     
-    addConstraintsToInputView(self.view, rowViews: [row1, row2, row3, row4])
-    
+    addConstraintsToInputView(mainKeyboard, rowViews: [row1, row2, row3, row4])
+
+    return mainKeyboard
+  }
+  
+  func addMainKeyboard() {
+    self.mainKeyboard = buildMainKeyboard()
+    self.view.addSubview(self.mainKeyboard)
   }
 
   func createRowOfButtons(buttonTitles: [NSString]) -> UIView {
@@ -91,6 +142,8 @@ class KeyboardViewController: UIInputViewController {
     let button = sender as UIButton
     
     var proxy = textDocumentProxy as UITextDocumentProxy
+    
+    NSLog(" height: \(self.view.frame.height) width: \(self.view.frame.width)")
     
     if let title = button.titleForState(.Normal) {
       switch title {
